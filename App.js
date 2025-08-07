@@ -1,16 +1,15 @@
-import { Text, View, TextInput, Pressable, Modal } from "react-native";
+import { Text, View, TextInput, Pressable, Modal, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FlatList } from "react-native-web";
 import styles from "./styles";
 
 export default function App() {
-
   const gerarCodigo = () => {
-    let arr = [];
+    let lista = [];
     for (let i = 0; i < 4; i++) {
-      arr.push(Math.floor(Math.random() * 10));
+      lista.push(Math.floor(Math.random() * 10));
     }
-    return arr;
+    return lista;
   };
 
   const [codigo, setCodigo] = useState(gerarCodigo());
@@ -88,23 +87,32 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Modal
-        transparent={true}
-        visible={modalVisible}
-        animationType="fade"
-      >
+      <Modal transparent={true} visible={modalVisible} animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>{modalMsg}</Text>
-            <Pressable style={styles.modalButton} onPress={() => setModalVisible(false)}>
+            <Pressable
+              style={styles.modalButton}
+              onPress={() => setModalVisible(false)}
+            >
               <Text style={styles.modalButtonText}>OK</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
-    
+
       <View style={styles.header}>
-        <Text style={styles.titulo}>Termo Number</Text>
+        <Image
+          style={styles.imgHeader}
+          source={require("./assets/header-icons.png")}
+        />
+        <View style={styles.viewTitulo}>
+          <Image
+            style={styles.interrogacao}
+            source={require("./assets/interrogacao-icon.png")}
+          />
+          <Text style={styles.titulo}>Termo Number</Text>
+        </View>
       </View>
 
       <View style={styles.jogo}>

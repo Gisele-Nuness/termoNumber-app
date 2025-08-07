@@ -9,6 +9,21 @@ const styles = StyleSheet.create({
   },
 
   header: {
+    width: "100%",
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 50,
+  },
+
+  imgHeader: {
+    width: '100%',
+    height: 90,
+    top: -20,
+
+  },
+
+  viewTitulo: {
     width: "70%",
     height: 60,
     backgroundColor: "#fff",
@@ -17,7 +32,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
     borderRadius: 20,
-    marginTop: 50,
+    flexDirection: 'row',
+    marginBottom: 20
+  },
+
+  interrogacao: {
+    width: 90,
+    height: 90,
+    position: 'absolute',
+    left: -50,
   },
 
   titulo: {
@@ -25,6 +48,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#f356a4ff",
     textTransform: "uppercase",
+    left: 5,
   },
 
   jogo: {
