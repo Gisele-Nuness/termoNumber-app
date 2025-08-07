@@ -4,45 +4,22 @@ import { FlatList } from "react-native-web";
 import styles from "./styles";
 
 export default function App() {
-  var codigo = [1, 2, 3, 4];
+
+  const gerarCodigo = () => {
+    let arr = [];
+    for (let i = 0; i < 4; i++) {
+      arr.push(Math.floor(Math.random() * 10));
+    }
+    return arr;
+  };
+
+  const [codigo, setCodigo] = useState(gerarCodigo());
+
   const [palpite, setPalpite] = useState(["", "", "", ""]);
   const cores = ["#ef4a4aff", "#9ce160ff", "#ecfb66ff"];
   const [tentativas, setTentativas] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
-
-  const palpites = [
-    {
-      t1: palpite[0],
-      t2: palpite[1],
-      t3: palpite[2],
-      t4: palpite[3],
-      cor1:
-        codigo[0] == Number(palpite[0])
-          ? cores[1]
-          : codigo.includes(Number(palpite[0]))
-          ? cores[2]
-          : cores[0],
-      cor2:
-        codigo[1] == Number(palpite[1])
-          ? cores[1]
-          : codigo.includes(Number(palpite[1]))
-          ? cores[2]
-          : cores[0],
-      cor3:
-        codigo[2] == Number(palpite[2])
-          ? cores[1]
-          : codigo.includes(Number(palpite[2]))
-          ? cores[2]
-          : cores[0],
-      cor4:
-        codigo[3] == Number(palpite[3])
-          ? cores[1]
-          : codigo.includes(Number(palpite[3]))
-          ? cores[2]
-          : cores[0],
-    },
-  ];
 
   const verificar = () => {
     if (
@@ -94,14 +71,16 @@ export default function App() {
       setModalVisible(true);
       setPalpite(["", "", "", ""]);
       setTentativas([]);
+      setCodigo(gerarCodigo());
       return;
     }
 
-    if (tentativas.length >= 3) {
+    if (tentativas.length >= 4) {
       setModalMsg("Você perdeu! O código era: " + codigo.join(""));
       setModalVisible(true);
       setPalpite(["", "", "", ""]);
       setTentativas([]);
+      setCodigo(gerarCodigo());
       return;
     }
     setPalpite(["", "", "", ""]);
