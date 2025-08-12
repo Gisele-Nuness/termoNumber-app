@@ -1,5 +1,5 @@
 import { Text, View, TextInput, Pressable, Modal, Image } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FlatList } from "react-native-web";
 import styles from "./styles";
 
@@ -13,22 +13,23 @@ export default function App() {
   };
 
   const [codigo, setCodigo] = useState(gerarCodigo());
-
   const [palpite, setPalpite] = useState(["", "", "", ""]);
   const cores = ["#ef4a4aff", "#9ce160ff", "#ecfb66ff"];
   const [tentativas, setTentativas] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
 
+  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
+  useEffect(() => {
+    inputRefs[0].current?.focus();
+  }, []);
+
   const verificar = () => {
-    if (
-      palpite[0] === "" ||
-      palpite[1] === "" ||
-      palpite[2] === "" ||
-      palpite[3] === ""
-    ) {
+    if (palpite.includes("")) {
       setModalMsg("Preencha todos os campos!");
       setModalVisible(true);
+      inputRefs[0].current?.focus();
       return;
     }
 
@@ -71,6 +72,7 @@ export default function App() {
       setPalpite(["", "", "", ""]);
       setTentativas([]);
       setCodigo(gerarCodigo());
+      inputRefs[0].current?.focus();
       return;
     }
 
@@ -80,9 +82,11 @@ export default function App() {
       setPalpite(["", "", "", ""]);
       setTentativas([]);
       setCodigo(gerarCodigo());
+      inputRefs[0].current?.focus();
       return;
     }
     setPalpite(["", "", "", ""]);
+    inputRefs[0].current?.focus();
   };
 
   return (
@@ -116,45 +120,25 @@ export default function App() {
       </View>
 
       <View style={styles.jogo}>
-        <TextInput
-          style={styles.input}
-          value={palpite[0]}
-          onChangeText={(text) => {
-            const novoPalpite = [...palpite];
-            novoPalpite[0] = text;
-            setPalpite(novoPalpite);
-          }}
-        />
+        {palpite.map((valor, index) => (
+          <TextInput
+            key={index}
+            ref={inputRefs[index]}
+            style={styles.input}
+            value={valor}
+            keyboardType="number-pad"
+            maxLength={1} 
+            onChangeText={(text) => {
+              const novoPalpite = [...palpite];
+              novoPalpite[index] = text;
+              setPalpite(novoPalpite);
 
-        <TextInput
-          style={styles.input}
-          value={palpite[1]}
-          onChangeText={(text) => {
-            const novoPalpite = [...palpite];
-            novoPalpite[1] = text;
-            setPalpite(novoPalpite);
-          }}
-        />
-
-        <TextInput
-          style={styles.input}
-          value={palpite[2]}
-          onChangeText={(text) => {
-            const novoPalpite = [...palpite];
-            novoPalpite[2] = text;
-            setPalpite(novoPalpite);
-          }}
-        />
-
-        <TextInput
-          style={styles.input}
-          value={palpite[3]}
-          onChangeText={(text) => {
-            const novoPalpite = [...palpite];
-            novoPalpite[3] = text;
-            setPalpite(novoPalpite);
-          }}
-        />
+              if (text && index < inputRefs.length - 1) {
+                inputRefs[index + 1].current?.focus();
+              }
+            }}
+          />
+        ))}
       </View>
 
       <View style={styles.jogadas}>
@@ -176,7 +160,7 @@ export default function App() {
               </Text>
             </View>
           )}
-        ></FlatList>
+        />
       </View>
 
       <Pressable style={styles.botao} onPress={verificar}>
