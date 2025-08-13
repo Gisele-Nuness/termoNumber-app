@@ -2,6 +2,7 @@ import { Text, View, TextInput, Pressable, Modal, Image } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { FlatList } from "react-native-web";
 import styles from "./styles";
+import * as Animatable from "react-native-animatable";
 
 export default function App() {
   const gerarCodigo = () => {
@@ -67,7 +68,7 @@ export default function App() {
     setTentativas([...tentativas, novaTentativa]);
 
     if (palpite.join("") === codigo.join("")) {
-      setModalMsg("Parabéns voce acertou!");
+      setModalMsg("Parabéns você acertou!");
       setModalVisible(true);
       setPalpite(["", "", "", ""]);
       setTentativas([]);
@@ -95,6 +96,18 @@ export default function App() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>{modalMsg}</Text>
+            {modalMsg.includes("Parabéns") ? (
+              <Image
+                style={styles.modalImage}
+                source={require("./assets/ganhou.gif")}
+              />
+            ) : modalMsg.includes("perdeu") ? (
+              <Image
+                style={styles.modalImage}
+                source={require("./assets/perdeu.gif")}
+              />
+            ) : null}
+
             <Pressable
               style={styles.modalButton}
               onPress={() => setModalVisible(false)}
@@ -110,13 +123,13 @@ export default function App() {
           style={styles.imgHeader}
           source={require("./assets/header-icons.png")}
         />
-        <View style={styles.viewTitulo}>
+        <Animatable.View animation="rubberBand" style={styles.viewTitulo}>
           <Image
             style={styles.interrogacao}
             source={require("./assets/interrogacao-icon.png")}
           />
           <Text style={styles.titulo}>Termo Number</Text>
-        </View>
+        </Animatable.View>
       </View>
 
       <View style={styles.jogo}>
@@ -127,7 +140,7 @@ export default function App() {
             style={styles.input}
             value={valor}
             keyboardType="number-pad"
-            maxLength={1} 
+            maxLength={1}
             onChangeText={(text) => {
               const novoPalpite = [...palpite];
               novoPalpite[index] = text;
@@ -145,7 +158,7 @@ export default function App() {
         <FlatList
           data={tentativas}
           renderItem={({ item }) => (
-            <View style={styles.tentativas}>
+            <Animatable.View animation="pulse" style={styles.tentativas}>
               <Text style={[styles.tentativa, { backgroundColor: item.cor1 }]}>
                 {item.t1}
               </Text>
@@ -158,13 +171,13 @@ export default function App() {
               <Text style={[styles.tentativa, { backgroundColor: item.cor4 }]}>
                 {item.t4}
               </Text>
-            </View>
+            </Animatable.View>
           )}
         />
       </View>
 
       <Pressable style={styles.botao} onPress={verificar}>
-        <Text style={styles.txtBotao}>OK</Text>
+        <Animatable.Text animation="bounceIn" style={styles.txtBotao}>OK</Animatable.Text>
       </Pressable>
     </View>
   );

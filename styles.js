@@ -146,6 +146,13 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "center",
   },
+
+  modalImage: {
+    width: 120,
+    height: 80,
+    marginBottom: 20,
+  },
+
   modalButton: {
     backgroundColor: "#36eee0",
     padding: 10,
